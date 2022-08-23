@@ -22,34 +22,26 @@ void testSorting(void){
 }
 
 void testRangeOccurence(void){
-	int testSamples[] = {4,5,7,8};
+	int testSamples[] = {2, 3, 8, 9, 10};
 	int array_size = sizeof(testSamples)/sizeof(testSamples[0]);
-	int rangeLowIndex, rangeHighIndex, rangeCount;
-	int isConsecutiveNum = 0, index = 0;
+	int num = 8;
+	int index = 3;
+	checkConsecutiveNum(testSamples, &num, &index, 3);
+	assert(rangeValues_st[3].rangeHighIndex == 9);
+	assert(rangeValues_st[3].rangeCount == 1);
 
-	index = 1;
-	rangeLowIndex = testSamples[index];
-	rangeHighIndex = testSamples[index];
-	rangeCount = 1;
-	isConsecutiveNum = checkRangeOccurence(index, testSamples, &rangeLowIndex, &rangeHighIndex, &rangeCount);
-	assert(isConsecutiveNum == 0);
-	assert(rangeLowIndex == 5);
-	assert(rangeHighIndex == 5);
-	assert(rangeCount == 1);
-
+	num = 3;
 	index = 2;
-	rangeLowIndex = testSamples[index];
-	rangeHighIndex = testSamples[index];
-	rangeCount = 1;
-	isConsecutiveNum = checkRangeOccurence(index, testSamples, &rangeLowIndex, &rangeHighIndex, &rangeCount);
-	assert(isConsecutiveNum == 1);
-	assert(rangeLowIndex == 7);
-	assert(rangeHighIndex == 8);
-	assert(rangeCount == 2);
+	checkConsecutiveNum(testSamples, &num, &index, 2);
+	assert(rangeValues_st[2].rangeHighIndex == 0);
+	assert(rangeValues_st[2].rangeCount == 0);
 
-	int test2Samples[] = {2, 3, 8, 9, 10};
-	array_size = sizeof(test2Samples)/sizeof(test2Samples[0]);
-	checkConsecutiveNumbers(test2Samples, array_size);
+	checkNextConsecutiveNum(testSamples, &num, &index, 2);
+	assert(rangeValues_st[3].rangeLowIndex == 8);
+	assert(rangeValues_st[3].rangeHighIndex == 8);
+	assert(rangeValues_st[3].rangeCount == 1);
+
+	checkRangeOccurence(testSamples, array_size);
 	assert(rangeValues_st[0].rangeLowIndex == 2);
 	assert(rangeValues_st[0].rangeHighIndex == 3);
 	assert(rangeValues_st[0].rangeCount == 2);
