@@ -10,6 +10,10 @@ void testSorting(void){
 	int testSamples[] = {7,8,4,5};
 	int array_size = sizeof(testSamples)/sizeof(testSamples[0]);
 
+	CheckSortingAndSwap(&testSamples[0], &testSamples[1]);
+	assert(testSamples[0]== 7);
+	assert(testSamples[1]== 8);
+
 	CheckSortingAndSwap(&testSamples[1], &testSamples[2]);
 	assert(testSamples[1]== 4);
 	assert(testSamples[2]== 8);
@@ -22,24 +26,37 @@ void testSorting(void){
 }
 
 void testRangeOccurence(void){
-	int testSamples[] = {2, 3, 8, 9, 10};
+	int testSamples[] = {2, 3, 8, 9, 10, 10};
 	int array_size = sizeof(testSamples)/sizeof(testSamples[0]);
 	int num = 8;
 	int index = 3;
-	checkConsecutiveNum(testSamples, &num, &index, 3);
+	checkConsecutiveNum(testSamples, &num, &index, 3); //8+1 == 9
 	assert(rangeValues_st[3].rangeHighIndex == 9);
 	assert(rangeValues_st[3].rangeCount == 1);
 
+	num = 10;
+	index = 4;
+	checkConsecutiveNum(testSamples, &num, &index, 5); //10 == 10
+	assert(rangeValues_st[4].rangeHighIndex == 10);
+	assert(rangeValues_st[4].rangeCount == 1);
+
 	num = 3;
 	index = 2;
-	checkConsecutiveNum(testSamples, &num, &index, 2);
+	checkConsecutiveNum(testSamples, &num, &index, 2); //3 != 8
 	assert(rangeValues_st[2].rangeHighIndex == 0);
 	assert(rangeValues_st[2].rangeCount == 0);
 
-	checkNextConsecutiveNum(testSamples, &num, &index, 2);
+	checkNextConsecutiveNum(testSamples, &num, &index, 2); //3+1<8
 	assert(rangeValues_st[3].rangeLowIndex == 8);
 	assert(rangeValues_st[3].rangeHighIndex == 8);
 	assert(rangeValues_st[3].rangeCount == 1);
+
+	num = 10;
+	index = 5;
+	checkNextConsecutiveNum(testSamples, &num, &index, 5); //10+1 > 10
+	assert(rangeValues_st[5].rangeLowIndex == 0);
+	assert(rangeValues_st[5].rangeHighIndex == 0);
+	assert(rangeValues_st[5].rangeCount == 0);
 
 	checkRangeOccurence(testSamples, array_size);
 	assert(rangeValues_st[0].rangeLowIndex == 2);
@@ -47,7 +64,7 @@ void testRangeOccurence(void){
 	assert(rangeValues_st[0].rangeCount == 2);
 	assert(rangeValues_st[1].rangeLowIndex == 8);
 	assert(rangeValues_st[1].rangeHighIndex == 10);
-	assert(rangeValues_st[1].rangeCount == 3);
+	assert(rangeValues_st[1].rangeCount == 4);
 }
 
 void testConsecutiveNumRange(void){
