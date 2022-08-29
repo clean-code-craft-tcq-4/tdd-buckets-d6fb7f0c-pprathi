@@ -4,27 +4,18 @@
 #include <assert.h>
 #include "CurrentSensing.h"
 
-void ConversionForCurrentGreaterThanZero(int index, float adcValues[], float minRange, float maxRange, int currentSamples[], int maxDigitalValue){
+void ConversionForCurrent(int index, float adcValues[], float minRange, float maxRange, int currentSamples[], int maxDigitalValue){
 	int adcRange = maxRange - minRange;
+
 	if(adcValues[index] < maxDigitalValue){
 		currentSamples[index] = round(adcRange * adcValues[index]/(maxDigitalValue-1));
 	}
 }
 
-void ConversionForCurrentLesserThanZero(int index, float adcValues[], float minRange, float maxRange, int currentSamples[], int maxDigitalValue){
-	int adcRange = maxRange - minRange;
-
-	if(adcValues[index] < maxDigitalValue){
-		currentSamples[index] = round(adcRange * adcValues[index]/(maxDigitalValue-1)) - maxRange;
-	}
-}
-
 void checkMinRange(int index, float adcValues[], float minRange, float maxRange, int currentSamples[], int maxDigitalValue){
+	ConversionForCurrent(index, adcValues, minRange, maxRange, currentSamples, maxDigitalValue);
 	if(minRange < 0){
-		ConversionForCurrentLesserThanZero(index, adcValues, minRange, maxRange, currentSamples, maxDigitalValue);
-	}
-	else{
-		ConversionForCurrentGreaterThanZero(index, adcValues, minRange, maxRange, currentSamples, maxDigitalValue);
+		currentSamples[index] = currentSamples[index] - maxRange;
 	}
 }
 
