@@ -89,7 +89,7 @@ void testCurrentRange(void){
 	checkMinRange(0, adcValues, 0, 10, currentSamples, 4095);
 	assert(currentSamples[0] == 3);
 
-	ConversionForCurrentGreaterThanZero(1, adcValues, 0, 20, currentSamples, 4095);
+	ConversionForCurrent(1, adcValues, 0, 20, currentSamples, 4095);
 	assert(currentSamples[1] == 20);
 
 	getCurrentSamples(adcValues, numOfInputs, 12, 0, 10, currentSamples);
@@ -102,9 +102,6 @@ void testCurrentRange(void){
 
 	checkMinRange(2, adc2Values, -10, 10, currentSamples, 1023);
 	assert(currentSamples[2] == -10);
-
-	ConversionForCurrentLesserThanZero(1, adc2Values, -12, 12, currentSamples, 1023);
-	assert(currentSamples[1] == 0);
 
 	getCurrentSamples(adc2Values, numOfInputs, 10, -15, 15, currentSamples);
 	assert(currentSamples[0] == 15);
