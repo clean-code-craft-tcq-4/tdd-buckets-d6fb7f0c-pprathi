@@ -3,6 +3,7 @@
 #include <assert.h>
 #include "SortSamples.h"
 #include "RangeOccurence.h"
+#include "CurrentSensing.h"
 
 extern tdd_st rangeValues_st[20];
 
@@ -79,16 +80,53 @@ void testConsecutiveNumRange(void){
 	assert(rangeValues_st[1].rangeCount == 3);
 }
 
+void testCurrentRange(void){
+	//test for positive range
+	float adcValues[] = {1146, 4094};
+	int numOfInputs = sizeof(adcValues)/sizeof(adcValues[0]);
+	int currentSamples[numOfInputs];
+
+	checkMinRange(0, adcValues, 0, 10, currentSamples, 4095);
+	assert(currentSamples[0] == 3);
+
+	ConversionForCurrentGreaterThanZero(1, adcValues, 0, 20, currentSamples, 4095);
+	assert(currentSamples[1] == 20);
+
+	getCurrentSamples(adcValues, numOfInputs, 12, 0, 10, currentSamples);
+	assert(currentSamples[0] == 3);
+	assert(currentSamples[1] == 10);
+
+	//test for negative range
+	float adc2Values[] = {1022, 511, 0};
+	numOfInputs = sizeof(adc2Values)/sizeof(adc2Values[0]);
+
+	checkMinRange(2, adc2Values, -10, 10, currentSamples, 1023);
+	assert(currentSamples[2] == -10);
+
+	ConversionForCurrentLesserThanZero(1, adc2Values, -12, 12, currentSamples, 1023);
+	assert(currentSamples[1] == 0);
+
+	getCurrentSamples(adc2Values, numOfInputs, 10, -15, 15, currentSamples);
+	assert(currentSamples[0] == 15);
+	assert(currentSamples[1] == 0);
+	assert(currentSamples[2] == -15);
+}
+
 void testfunctions(void){
 	testSorting();
 	testRangeOccurence();
 	testConsecutiveNumRange();
+	testCurrentRange();
 }
 
-int main(void) {
-	int currentSamples[] = {3, 3, 5, 4, 10, 11, 12};
-	int array_size = sizeof(currentSamples)/sizeof(currentSamples[0]);
 
+int main(void) {
+	float adcValues[] = {1146, 1150, 2045, 1700};
+	int numOfInputs = sizeof(adcValues)/sizeof(adcValues[0]);
+	int currentSamples[numOfInputs];
+	getCurrentSamples(adcValues, numOfInputs, 12, 0, 10, currentSamples);
+
+	int array_size = sizeof(currentSamples)/sizeof(currentSamples[0]);
 	DisplayConsecutiveNumRange(currentSamples, array_size);
 	testfunctions();
 }
